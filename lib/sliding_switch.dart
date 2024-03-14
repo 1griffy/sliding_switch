@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class SlidingSwitch extends StatefulWidget {
+  final bool singleSwitch;
   final double height;
   final ValueChanged<bool> onChanged;
   final double width;
@@ -29,6 +30,7 @@ class SlidingSwitch extends StatefulWidget {
     required this.onTap,
     required this.onDoubleTap,
     required this.onSwipe,
+    this.singleSwitch = false,
     this.textOff = "Off",
     this.textOn = "On",
     this.iconOff,
@@ -118,7 +120,7 @@ class _SlidingSwitch extends State<SlidingSwitch>
                 )),
             Row(
               children: [
-                Expanded(
+                singleSwitch ? Expanded(
                   child: Center(
                     child: widget.iconOff == null
                       ? Text(
@@ -138,7 +140,7 @@ class _SlidingSwitch extends State<SlidingSwitch>
                               : widget.colorOff,
                       ),
                   ),
-                ),
+                ) : Expanded(),
                 Expanded(
                   child: Center(
                     child: widget.iconOn == null
