@@ -8,8 +8,6 @@ class SlidingSwitch extends StatefulWidget {
   final bool value;
   final String textOff;
   final String textOn;
-  final IconData iconOff;
-  final IconData iconOn;
   final double contentSize;
   final Duration animationDuration;
   final Color colorOn;
@@ -30,11 +28,9 @@ class SlidingSwitch extends StatefulWidget {
     required this.onTap,
     required this.onDoubleTap,
     required this.onSwipe,
-    this.singleSwitch = false,
+    required this.singleSwitch,
     this.textOff = "Off",
     this.textOn = "On",
-    this.iconOff = Icons.close,
-    this.iconOn = Icons.check,
     this.contentSize = 17,
     this.colorOn = const Color(0xffdc6c73),
     this.colorOff = const Color(0xff6682c0),
@@ -81,6 +77,63 @@ class _SlidingSwitch extends State<SlidingSwitch>
 
   @override
   Widget build(BuildContext context) {
+    if (widget.singleSwitch) {
+      return GestureDetector(
+          onDoubleTap: () {
+            _action();
+            if (widget.onDoubleTap != null) widget.onDoubleTap();
+          },
+          onTap: () {
+            _action();
+            if (widget.onTap != null) widget.onTap();
+          },
+          onPanEnd: (details) {
+            _action();
+            if (widget.onSwipe != null) widget.onSwipe();
+          },
+          child: Container(
+            height: widget.height,
+            width: widget.width / 2,
+            decoration: BoxDecoration(
+                color: widget.background,
+                borderRadius: BorderRadius.circular(50)),
+            padding: EdgeInsets.all(2),
+            child: Stack(children: <Widget>[
+              Transform.translate(
+                  offset: Offset((value - (2 * value)), 0),
+                  child: Container(
+                    height: widget.height,
+                    width: widget.width / 2 - 4,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                        color: widget.buttonColor,
+                        boxShadow: [
+                          new BoxShadow(
+                            color: Colors.black.withOpacity(0.2),
+                            offset: Offset(0, 10),
+                            blurRadius: 20.0,
+                          ),
+                        ]),
+                  )),
+              Row(
+                children: [
+                  Expanded(
+                    child: Center(
+                        child: Text(
+                      widget.textOn,
+                      style: TextStyle(
+                          color:
+                              turnState ? widget.colorOn : widget.inactiveColor,
+                          fontSize: widget.contentSize,
+                          fontWeight: FontWeight.w600),
+                    )),
+                  )
+                ],
+              )
+            ]),
+          ));
+    }
+
     return GestureDetector(
         onDoubleTap: () {
           _action();
@@ -120,46 +173,27 @@ class _SlidingSwitch extends State<SlidingSwitch>
                 )),
             Row(
               children: [
-                widget.singleSwitch ? Expanded(
-                  child: Center(
-                    child: widget.iconOff == null
-                        ? Text(
-                      widget.textOff,
-                      style: TextStyle(
-                          color: turnState
-                              ? widget.inactiveColor
-                              : widget.colorOff,
-                          fontSize: widget.contentSize,
-                          fontWeight: FontWeight.w600),
-                    )
-                        : Icon(widget.iconOff,
-                      semanticLabel: widget.textOff,
-                      size: widget.contentSize,
-                      color: turnState
-                          ? widget.inactiveColor
-                          : widget.colorOff,
-                    ),
-                  ),
-                ) : Container(),
                 Expanded(
                   child: Center(
-                    child: widget.iconOn == null
-                        ? Text(
-                      widget.textOn,
-                      style: TextStyle(
-                          color:
-                          turnState ? widget.colorOn : widget.inactiveColor,
-                          fontSize: widget.contentSize,
-                          fontWeight: FontWeight.w600),
-                    )
-                        : Icon(widget.iconOn,
-                      semanticLabel: widget.textOn,
-                      size: widget.contentSize,
-                      color: turnState
-                          ? widget.colorOn
-                          : widget.inactiveColor,
-                    ),
-                  ),
+                      child: Text(
+                    widget.textOff,
+                    style: TextStyle(
+                        color:
+                            turnState ? widget.inactiveColor : widget.colorOff,
+                        fontSize: widget.contentSize,
+                        fontWeight: FontWeight.w600),
+                  )),
+                ),
+                Expanded(
+                  child: Center(
+                      child: Text(
+                    widget.textOn,
+                    style: TextStyle(
+                        color:
+                            turnState ? widget.colorOn : widget.inactiveColor,
+                        fontSize: widget.contentSize,
+                        fontWeight: FontWeight.w600),
+                  )),
                 )
               ],
             )
