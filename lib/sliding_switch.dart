@@ -33,8 +33,8 @@ class SlidingSwitch extends StatefulWidget {
     this.singleSwitch = false,
     this.textOff = "Off",
     this.textOn = "On",
-    this.iconOff,
-    this.iconOn,
+    this.iconOff = Icons.close,
+    this.iconOn = Icons.check,
     this.contentSize = 17,
     this.colorOn = const Color(0xffdc6c73),
     this.colorOff = const Color(0xff6682c0),
@@ -120,45 +120,45 @@ class _SlidingSwitch extends State<SlidingSwitch>
                 )),
             Row(
               children: [
-                singleSwitch ? Expanded(
+                widget.singleSwitch ? Expanded(
                   child: Center(
                     child: widget.iconOff == null
-                      ? Text(
-                          widget.textOff,
-                          style: TextStyle(
-                              color: turnState
-                                  ? widget.inactiveColor
-                                  : widget.colorOff,
-                              fontSize: widget.contentSize,
-                              fontWeight: FontWeight.w600),
-                        )
-                      : Icon(widget.iconOff,
-                          semanticLabel: widget.textOff,
-                          size: widget.contentSize,
+                        ? Text(
+                      widget.textOff,
+                      style: TextStyle(
                           color: turnState
                               ? widget.inactiveColor
                               : widget.colorOff,
-                      ),
+                          fontSize: widget.contentSize,
+                          fontWeight: FontWeight.w600),
+                    )
+                        : Icon(widget.iconOff,
+                      semanticLabel: widget.textOff,
+                      size: widget.contentSize,
+                      color: turnState
+                          ? widget.inactiveColor
+                          : widget.colorOff,
+                    ),
                   ),
                 ) : Container(),
                 Expanded(
                   child: Center(
                     child: widget.iconOn == null
-                    ? Text(
-                        widget.textOn,
-                        style: TextStyle(
-                            color:
-                                turnState ? widget.colorOn : widget.inactiveColor,
-                            fontSize: widget.contentSize,
-                            fontWeight: FontWeight.w600),
-                      )
-                    : Icon(widget.iconOn,
-                          semanticLabel: widget.textOn,
-                          size: widget.contentSize,
-                          color: turnState
-                              ? widget.colorOn
-                              : widget.inactiveColor,
-                      ),
+                        ? Text(
+                      widget.textOn,
+                      style: TextStyle(
+                          color:
+                          turnState ? widget.colorOn : widget.inactiveColor,
+                          fontSize: widget.contentSize,
+                          fontWeight: FontWeight.w600),
+                    )
+                        : Icon(widget.iconOn,
+                      semanticLabel: widget.textOn,
+                      size: widget.contentSize,
+                      color: turnState
+                          ? widget.colorOn
+                          : widget.inactiveColor,
+                    ),
                   ),
                 )
               ],
