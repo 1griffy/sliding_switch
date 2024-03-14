@@ -140,7 +140,7 @@ class _SlidingSwitch extends State<SlidingSwitch>
                               : widget.colorOff,
                       ),
                   ),
-                ) : Expanded(),
+                ) : Container(),
                 Expanded(
                   child: Center(
                     child: widget.iconOn == null
